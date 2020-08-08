@@ -25,8 +25,8 @@ def combineImages(imageDir, imagesPerLine, margin, combinedImageName):
     
     width, height = firstImage.size
     
-    combinedWidth = (width + margin) * imagesPerLine + margin;
-    combinedHeight = (height + margin) * int(len(files) / imagesPerLine) + margin
+    combinedWidth = (width + margin) * imagesPerLine;
+    combinedHeight = (height + margin) * int(len(files) / imagesPerLine)
     
     # create a new transparent image that fits all other images
     combined = Image.new('RGBA', (combinedWidth, combinedHeight), (0, 0, 0, 0))
@@ -34,7 +34,7 @@ def combineImages(imageDir, imagesPerLine, margin, combinedImageName):
     for i, file in enumerate(files):
         image = Image.open(file)
         
-        position = (((width + margin) * (i % imagesPerLine) + margin), ((height + margin) * int(i / imagesPerLine)) + margin)
+        position = (((width + margin) * (i % imagesPerLine)), ((height + margin) * int(i / imagesPerLine)))
         combined.paste(image, position)
     
     combined.save("combined/" + combinedImageName, 'PNG')
