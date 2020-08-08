@@ -6,22 +6,22 @@ Resize a batch of images
 from PIL import Image
 import os
 
-def resizeImages(directory, scalingFactor=1.0):
+def resizeImages(directory, scalingFactor=1.0, outputDir="scaled"):
     files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
     print("Files to be resized: " + str(files))
     print("Scaling factor: " + str(scalingFactor))
     
     workingDir = os.getcwd()
     os.chdir(directory)
-    if (not os.path.exists("scaled")):
-        os.mkdir("scaled")
+    if (not os.path.exists(outputDir)):
+        os.mkdir(outputDir)
     
     for file in files:
         image = Image.open(file)
         width, height = image.size
         fileType = image.format
         imageName = str(file)
-        outputFile = "scaled/" + imageName
+        outputFile = outputDir + "/" + imageName
         
         #print("width: %d, height %d" % (width, height))
         #print("fileType: %s" % fileType)
@@ -34,7 +34,7 @@ def resizeImages(directory, scalingFactor=1.0):
         resized = image.resize((newWidth, newHeight), Image.ANTIALIAS)
         resized.save(outputFile, fileType)
     
-    print("Resized images saved to: " + directory + "/scaled/")
+    print("Resized images saved to: " + directory + "/" + outputDir + "/")
     
     os.chdir(workingDir)
 
@@ -43,4 +43,4 @@ if (__name__ == "__main__"):
     directory = input("Enter a directory (subdirectory of the current working directory): ")
     scalingFactor = float(input("Enter a scaling factor (1.0 for 100%): "))
     
-    resizeImages(directory, scalingFactor)
+    resizeImages(directory, scalingFactor, "scaled")

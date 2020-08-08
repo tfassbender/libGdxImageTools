@@ -8,6 +8,7 @@ Re-arrange a tileset image:
 
 import cropImages
 import resizeImages
+import addImagePadding
 import combineImages
 
 import sys
@@ -29,11 +30,15 @@ def readConfigFile(configFileName="tileset.config"):
     #    # 2. tiles directory                                                                                  #
     #    # 3. scale factor                                                                                     #
     #                                                                                                          #
+    ### Add image padding configuration ########################################################################
+    #                                                                                                          #
+    #    # 4. padding pixels                                                                                   #
+    #                                                                                                          #
     ### Combine images configuration ###########################################################################
     #                                                                                                          #
-    #    # 4. images per line                                                                                  #
-    #    # 5. margin between images (in pixels)                                                                #
-    #    # 6. combined image name                                                                              #
+    #    # 5. images per line                                                                                  #
+    #    # 6. margin between images (in pixels)                                                                #
+    #    # 7. combined image name                                                                              #
     #                                                                                                          #
     ############################################################################################################
     
@@ -43,7 +48,7 @@ def readConfigFile(configFileName="tileset.config"):
     
     config = []
     
-    intConfigs = [3, 4]
+    intConfigs = [3, 4, 5]
     floatConfigs = [2]
     
     # remove comments
@@ -91,20 +96,25 @@ def createDefaultConfigFile():
 #    # 2. tiles directory                                                                                  #
 #    # 3. scale factor                                                                                     #
 #                                                                                                          #
+### Add image padding configuration ########################################################################
+#                                                                                                          #
+#    # 4. padding pixels                                                                                   #
+#                                                                                                          #
 ### Combine images configuration ###########################################################################
 #                                                                                                          #
-#    # 4. images per line                                                                                  #
-#    # 5. margin between images (in pixels)                                                                #
-#    # 6. combined image name                                                                              #
+#    # 5. images per line                                                                                  #
+#    # 6. margin between images (in pixels)                                                                #
+#    # 7. combined image name                                                                              #
 #                                                                                                          #
 ############################################################################################################
 
 crop.config   # 1. crop configuration file
 tiles         # 2. tiles directory
 1             # 3. scale factor
-10            # 4. images per line
-2             # 5. margin between images (in pixels)
-tileset       # 6. combined image name"""
+2             # 4. number of pixels for padding
+10            # 5. images per line
+2             # 6. margin between images (in pixels)
+tileset       # 7. combined image name"""
     outputFile = open('tileset_default.config', 'w')
     outputFile.write(configText)
     outputFile.close()
@@ -114,7 +124,7 @@ if (__name__ == "__main__"):
     configFile = input("Enter the name of the config file: ")
     
     try:
-        cropConfigFile, teilesDirectory, scaleFactor, imagesPerLine, margin, combinedImageName = readConfigFile(configFile)
+        cropConfigFile, teilesDirectory, scaleFactor, paddingPixels, imagesPerLine, margin, combinedImageName = readConfigFile(configFile)
     except Exception as e:
         print("error while loading the configuration: " + str(e))
         createDefaultConfig = input("Do you want to create a default config file in 'tileset_default.config'? (y/N) ")
@@ -137,20 +147,32 @@ if (__name__ == "__main__"):
     print("\n\n ### Resizing images #########################################################################\n")
     try:
         print("resizing images...")
-        resizeImages.resizeImages(outputDirName, scaleFactor)
+        resizeImages.resizeImages(outputDirName, scaleFactor, "scaled")
         print("\ndone")
     except Exception as e:
         print("errors occured while trying to scale the images: " + str(e))
         sys.exit(1)
         
+    print("\n\n ### Adding Padding to images... #############################################################\n")
+    try:
+        print("adding padding...")
+        addImagePadding.addPaddingToImagesInDir(outputDirName + "/scaled", paddingPixels, "padding")
+        print("\ndone")
+    except Exception as e:
+        print("errors occured while trying to add padding to the images: " + str(e))
+        sys.exit(1)
+        
     print("\n\n ### Combining images ########################################################################\n")
     try:
         print("combining images...")
-        combineImages.combineImages(outputDirName + "/scaled", imagesPerLine, margin, combinedImageName)
+        combineImages.combineImages(outputDirName + "/scaled/padding", imagesPerLine, margin, combinedImageName)
         print("\ndone")
     except Exception as e:
         print("errors occured while trying to combine the images: " + str(e))
         sys.exit(1)
         
-    print("\n\nRearranging tileset done\n")
+    print("\n\nRearranging tileset done")
+    print("\nResults were written to " + outputDirName + "/scaled/padding/combined/" + combinedImageName + "\n")
+    
+    
     

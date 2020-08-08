@@ -58,7 +58,7 @@ def addPaddingToImage(imagePath, paddingPixels, imageDestinationPath):
     paddingImage.save(imageDestinationPath, image.format)
 
 
-def addPaddingToImagesInDir(directory, paddingPixels, outputDir):
+def addPaddingToImagesInDir(directory, paddingPixels=2, outputDir="padding"):
     files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
     print("Files to be resized: " + str(files))
     print("Padding pixels: " + str(paddingPixels))
@@ -74,6 +74,7 @@ def addPaddingToImagesInDir(directory, paddingPixels, outputDir):
     print("Wrote padding images to output directory: " + outputDir)
     
     os.chdir(workingDir)
+
 
 if (__name__ == "__main__"):
     directory = input("Enter a directory (subdirectory of the current working directory): ")
