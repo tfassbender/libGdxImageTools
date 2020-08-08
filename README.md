@@ -6,6 +6,7 @@ A collection of python scripts to manipulate images to use them in libGDX (or ot
 
 - **cropImages.py**: Crops an image into pieces of defined size, offsets, names, ... (to put them a texture atlas)
 - **resizeImages.py**: Resizes all images in a directory
+- **addImagePadding.py**: Adds a padding to all images in a directory, so that the padding pixesl are a copy of the edge pixels
 - **combineImages.py**: Combines all images in a directory into one image
 - **reArrangeTileset.py**: All of the above: Crop the tileset into pieces, scale it and put it back together
 
