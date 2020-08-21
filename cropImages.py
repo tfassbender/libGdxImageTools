@@ -7,7 +7,7 @@ from PIL import Image
 import os
 
 
-def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, outputDirName="crop", continuousIndices=False, xOffsets=[0], yOffsets=[0], xOffsetStartsBeforeImage=False, yOffsetStartsBeforeImage=False, numImages=-1):
+def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, outputDirName="crop", continuousIndices=False, xOffsets=[0], yOffsets=[0], xOffsetStartsBeforeImage=False, yOffsetStartsBeforeImage=False, numImages=[-1], createDirectoryPerLine=True):
     # load the image
     image = Image.open(inputImageFile)
     imageWidth, imageHeight = image.size
@@ -26,13 +26,19 @@ def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, ou
     # loop over the image to crop the pieces
     for row, y in enumerate(range(startY, imageHeight, height)):
         y += sum(yOffsets[:(row + 1 if yOffsetStartsBeforeImage else row)])
+        imageCountPerLine = 0
+        
+        if (row >= len(outputNamesPerLine)):
+            break
+            
         for col, x in enumerate(range(startX, imageWidth, width)):
             x += sum(xOffsets[:(col + 1 if xOffsetStartsBeforeImage else col)])
             cropBox = (x, y, x+width, y+height)
             crop = image.crop(cropBox)
+            imageCountPerLine += 1
             
             # name the croped image
-            imageName = outputNamesPerLine[row % len(outputNamesPerLine)];
+            imageName = outputNamesPerLine[row];
             if (not continuousIndices and len(outputNamesPerLine) < row):
                 imageName += "_" + str(row)
             
@@ -40,14 +46,25 @@ def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, ou
             try:
                 if (not os.path.exists(outputDirName)):
                     os.mkdir(outputDirName)
+                    
+                if (createDirectoryPerLine):
+                    if (not os.path.exists(outputDirName + "/" + imageName)):
+                        os.mkdir(outputDirName + "/" + imageName)
                 
                 imageIndex = col + 1 if not continuousIndices else imageCount + 1
                 imageCount += 1
                 
-                crop.save(outputDirName + "/" + imageName + "_" + str(imageIndex) + ".png")
+                if (createDirectoryPerLine):
+                    imagePath = outputDirName + "/" + imageName + "/" + imageName + "_" + str(imageIndex) + ".png"
+                else:
+                    imagePath = outputDirName + "/" + imageName + "_" + str(imageIndex) + ".png"
+                    
+                if (os.path.exists(imagePath)):
+                    imagePath = imagePath[:-4] + "_1.png"
+                crop.save(imagePath)
                 
-                if (imageCount >= numImages and numImages > 0):
-                    return
+                if (imageCountPerLine >= numImages[row % len(numImages)] and numImages[row % len(numImages)] > 0):
+                    break
             except Exception as e:
                 print(e)
 
@@ -72,7 +89,7 @@ def readConfigFile(configFileName="crop.config"):
     
     intConfigs = [1, 2, 6, 7, 10]
     booleanConfigs = [5, 8, 9]
-    listConfigs = [3, 6, 7]
+    listConfigs = [3, 6, 7, 10]
     
     config = []
     

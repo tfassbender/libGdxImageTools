@@ -19,6 +19,7 @@ A collection of python scripts to manipulate images to use them in libGDX (or ot
 
 - **dwarf.config**: A demo configuration to crop the image file 'Dwarf_Sprite_Sheet1.2v.png'
 - **items.config**: A demo configuration to crop the image file 'rpgItems.png'
+- **minotaur.config**: A demo configuration to crop the image file 'Minotaur - Sprite Sheet.png', that has different counts of images per line
 - **rearrange_tileset.config**: A demo configuration to rearrange the image file 'rpg_nature_tileset.png'
 
 (All of the images used here are available (for free) on itch.io)

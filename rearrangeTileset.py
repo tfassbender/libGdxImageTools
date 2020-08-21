@@ -138,7 +138,7 @@ if (__name__ == "__main__"):
         print("reading config file...")
         inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages = cropImages.readConfigFile(cropConfigFile)
         print("cropping image...")
-        cropImages.cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages)
+        cropImages.cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages, createDirectoryPerLine=False)
         print("\ndone")
     except Exception as e:
         print("errors occured while trying to crop the image: " + str(e))
