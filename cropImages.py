@@ -28,7 +28,7 @@ def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, ou
         y += sum(yOffsets[:(row + 1 if yOffsetStartsBeforeImage else row)])
         imageCountPerLine = 0
         
-        if (row >= len(outputNamesPerLine)):
+        if (len(outputNamesPerLine) > 1 and row >= len(outputNamesPerLine)):
             break
             
         for col, x in enumerate(range(startX, imageWidth, width)):
@@ -38,7 +38,7 @@ def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, ou
             imageCountPerLine += 1
             
             # name the croped image
-            imageName = outputNamesPerLine[row];
+            imageName = outputNamesPerLine[row % len(outputNamesPerLine)];
             if (not continuousIndices and len(outputNamesPerLine) < row):
                 imageName += "_" + str(row)
             
@@ -188,7 +188,7 @@ if (__name__ == "__main__"):
             
             try:
                 inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages = config
-                cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages)
+                cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages, createDirectoryPerLine=False)
             except Exception as e:
                 print(e)
             
