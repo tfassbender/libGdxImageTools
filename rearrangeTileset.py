@@ -119,12 +119,9 @@ tileset       # 7. combined image name"""
     outputFile.write(configText)
     outputFile.close()
 
-
-if (__name__ == "__main__"):
-    configFile = input("Enter the name of the config file: ")
-    
+def rearrangeTileset(configFile):
     try:
-        cropConfigFile, teilesDirectory, scaleFactor, paddingPixels, imagesPerLine, margin, combinedImageName = readConfigFile(configFile)
+        cropConfigFile, tilesDirectory, scaleFactor, paddingPixels, imagesPerLine, margin, combinedImageName = readConfigFile(configFile)
     except Exception as e:
         print("error while loading the configuration: " + str(e))
         createDefaultConfig = input("Do you want to create a default config file in 'tileset_default.config'? (y/N) ")
@@ -137,6 +134,7 @@ if (__name__ == "__main__"):
     try:
         print("reading config file...")
         inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages = cropImages.readConfigFile(cropConfigFile)
+        outputDirName = tilesDirectory # overwrite the directory that was configured in the crop config file
         print("cropping image...")
         cropImages.cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages, createDirectoryPerLine=False)
         print("\ndone")
@@ -174,5 +172,9 @@ if (__name__ == "__main__"):
     print("\n\nRearranging tileset done")
     print("\nResults were written to " + outputDirName + "/scaled/padding/combined/" + combinedImageName + "\n")
     
-    
-    
+
+
+if (__name__ == "__main__"):
+    configFile = input("Enter the name of the config file: ")
+    rearrangeTileset(configFile);
+
