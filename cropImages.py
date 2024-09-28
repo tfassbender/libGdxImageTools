@@ -188,7 +188,7 @@ if (__name__ == "__main__"):
             
             try:
                 inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages = config
-                cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages, createDirectoryPerLine=False)
+                cropImageToPieces(inputImageFile, width, height, outputNamesPerLine, outputDirName, continuousIndices, xOffset, yOffset, xOffsetStartsBeforeImage, yOffsetStartsBeforeImage, numImages, createDirectoryPerLine=True)
             except Exception as e:
                 print(e)
             

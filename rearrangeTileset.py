@@ -175,6 +175,8 @@ def rearrangeTileset(configFile):
 
 
 if (__name__ == "__main__"):
-    configFile = input("Enter the name of the config file: ")
+    configFile = input("Enter the name of the config file (default is 'rearrange.config': ")
+    if len(configFile) == 0:
+        configFile = "rearrange.config"
     rearrangeTileset(configFile);
 

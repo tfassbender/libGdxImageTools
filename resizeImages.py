@@ -31,7 +31,7 @@ def resizeImages(directory, scalingFactor=1.0, outputDir="scaled"):
         newWidth = int(width * scalingFactor)
         newHeight = int(height * scalingFactor)
         
-        resized = image.resize((newWidth, newHeight), Image.ANTIALIAS)
+        resized = image.resize((newWidth, newHeight), Image.LANCZOS)
         resized.save(outputFile, fileType)
     
     print("Resized images saved to: " + directory + "/" + outputDir + "/")
