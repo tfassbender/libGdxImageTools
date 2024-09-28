@@ -15,6 +15,12 @@ def cropImageToPieces(inputImageFile, width, height, outputNamesPerLine=None, ou
     # calculate the starting positions
     startX = xOffsets[0] if xOffsetStartsBeforeImage else 0
     startY = yOffsets[0] if yOffsetStartsBeforeImage else 0
+
+    # fill the offset lists with the last value if the list is too short
+    if len(xOffsets) < imageWidth // width:
+        xOffsets += [xOffsets[-1] for i in range(imageWidth // width - len(xOffsets))]
+    if len(yOffsets) < imageHeight // height:
+        yOffsets += [yOffsets[-1] for i in range(imageHeight // height - len(yOffsets))]
     
     # if no output name is defined, make the ouput name the name of the input image
     if outputNamesPerLine is None:
